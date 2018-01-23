@@ -1,6 +1,8 @@
 package org.superbiz.moviefun;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,26 +23,34 @@ public class DbConfig {
     public DataSource albumsDataSource(
             @Value("${moviefun.datasources.albums.url}") String url,
             @Value("${moviefun.datasources.albums.username}") String username,
-            @Value("${moviefun.datasources.albums.password}") String password
+            @Value("${moviefun.datasources.albums.password}") String password,
+            @Value("${moviefun.datasources.albums.maximumPoolSize}") String maxPoolSize
     ) {
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setURL(url);
         dataSource.setUser(username);
         dataSource.setPassword(password);
-        return dataSource;
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setDataSource(dataSource);
+        hikariConfig.setMaximumPoolSize(Integer.parseInt(maxPoolSize));
+        return new HikariDataSource(hikariConfig);
     }
 
     @Bean
     public DataSource moviesDataSource(
             @Value("${moviefun.datasources.movies.url}") String url,
             @Value("${moviefun.datasources.movies.username}") String username,
-            @Value("${moviefun.datasources.movies.password}") String password
+            @Value("${moviefun.datasources.movies.password}") String password,
+            @Value("${moviefun.datasources.albums.maximumPoolSize}") String maxPoolSize
     ) {
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setURL(url);
         dataSource.setUser(username);
         dataSource.setPassword(password);
-        return dataSource;
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setDataSource(dataSource);
+        hikariConfig.setMaximumPoolSize(Integer.parseInt(maxPoolSize));
+        return new HikariDataSource(hikariConfig);
     }
 
     @Bean
