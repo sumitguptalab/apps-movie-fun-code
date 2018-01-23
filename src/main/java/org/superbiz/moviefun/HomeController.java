@@ -3,6 +3,9 @@ package org.superbiz.moviefun;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Map;
+
+
 @Controller
 public class HomeController {
 
@@ -18,14 +21,16 @@ public class HomeController {
     }
 
     @GetMapping("/setup")
-    public String setup(){
-        moviesBean.addMovie(new Movie("Batman","Nolan","Action", 9, 2004));
-        moviesBean.addMovie(new Movie("Batman1","Nolan1","Action", 8, 2005));
-        moviesBean.addMovie(new Movie("Batman2","Nolan2","Action", 7, 2006));
-        moviesBean.addMovie(new Movie("Batman3","Nolan3","Action", 6, 2007));
-        moviesBean.addMovie(new Movie("Batman4","Nolan4","Action", 5, 2008));
-        moviesBean.addMovie(new Movie("Batman5","Nolan5","Action", 4, 2009));
-        moviesBean.addMovie(new Movie("Batman6","Nolan6","Action", 3, 2010));
+    public String setup(Map<String, Object> model){
+        moviesBean.addMovie(new Movie("Wedding Crashers", "David Dobkin", "Comedy", 7, 2005));
+        moviesBean.addMovie(new Movie("Starsky & Hutch", "Todd Phillips", "Action", 6, 2004));
+        moviesBean.addMovie(new Movie("Shanghai Knights", "David Dobkin", "Action", 6, 2003));
+        moviesBean.addMovie(new Movie("I-Spy", "Betty Thomas", "Adventure", 5, 2002));
+        moviesBean.addMovie(new Movie("The Royal Tenenbaums", "Wes Anderson", "Comedy", 8, 2001));
+        moviesBean.addMovie(new Movie("Zoolander", "Ben Stiller", "Comedy", 6, 2001));
+        moviesBean.addMovie(new Movie("Shanghai Noon", "Tom Dey", "Comedy", 7, 2000));
+
+        model.put("movies", moviesBean.getMovies());
 
         return "setup";
     }
