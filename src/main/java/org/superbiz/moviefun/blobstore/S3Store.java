@@ -25,7 +25,10 @@ public class S3Store implements BlobStore {
 
     @Override
     public void put(Blob blob) throws IOException {
-        s3.putObject(bucketName, blob.name, blob.inputStream, new ObjectMetadata());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(blob.contentType);
+//        objectMetadata.setContentLength(IOUtils.toByteArray(blob.inputStream).length);
+        s3.putObject(bucketName, blob.name, blob.inputStream, objectMetadata);
     }
 
     @Override
@@ -33,7 +36,6 @@ public class S3Store implements BlobStore {
         if (!s3.doesObjectExist(bucketName, name)) {
             return Optional.empty();
         }
-
         S3Object s3Object = s3.getObject(bucketName, name);
         S3ObjectInputStream content = s3Object.getObjectContent();
 
